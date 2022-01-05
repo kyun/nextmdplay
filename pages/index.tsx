@@ -1,9 +1,36 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import type { GetStaticProps, NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+import ReactMarkdown from "react-markdown";
+import { NormalComponents } from "react-markdown/lib/complex-types";
+import { SpecialComponents } from "react-markdown/lib/ast-to-react";
 
-const Home: NextPage = () => {
+const mdComp: Partial<
+  Omit<NormalComponents, keyof SpecialComponents> & SpecialComponents
+> = {
+  h1: ({ node, ...props }) => <h1 className="md-h1" {...props} />,
+  h2: ({ node, ...props }) => <h2 className="md-h2" {...props} />,
+  h3: ({ node, ...props }) => <h3 className="md-h3" {...props} />,
+  h4: ({ node, ...props }) => <h4 className="md-h4" {...props} />,
+  p: ({ node, ...props }) => <p className="md-p" {...props} />,
+};
+
+const markdown = `Here is some JavaScript code:
+
+# 1. 총칙
+## a. 목적
+### title3
+#### titlt4
+
+p
+
+~~~js
+console.log('It works!')
+~~~
+`;
+
+const Home: NextPage = ({ text }: any) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -13,12 +40,14 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+        <ReactMarkdown components={mdComp} children={text} />
+
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
+          Get started by editing{" "}
           <code className={styles.code}>pages/index.tsx</code>
         </p>
 
@@ -59,14 +88,28 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
+
+export const getStaticProps: GetStaticProps = async (ctx: any) => {
+  console.log(ctx);
+  const text = await fetch("http://localhost:3000/markdown/test.md").then(
+    async (res) => {
+      return await res.text();
+    }
+  );
+  return {
+    props: {
+      text,
+    },
+  };
+};

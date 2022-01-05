@@ -1,0 +1,25 @@
+.md-h1 {
+  font-size: 25px;
+  color: #222;
+  font-weight: bold;
+}
+.md-h2 {
+  font-size: 20px;
+  color: #222;
+  font-weight: 600;
+}
+.md-h3 {
+  font-size: 16px;
+  color: #6e6e76;
+  font-weight: 500;
+}
+.md-h4 {
+  font-size: 16px;
+  color: #222;
+  font-weight: 600;
+}
+.md-p {
+  font-size: 20px;
+  color: #666;
+  font-weight: 400;
+}
