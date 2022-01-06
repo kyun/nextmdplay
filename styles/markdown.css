@@ -1,17 +1,23 @@
 .md-h1 {
-  font-size: 25px;
+  font-size: 36px;
+  line-height: 36px;
+  margin: 80px 0;
   color: #222;
   font-weight: bold;
 }
 .md-h2 {
-  font-size: 20px;
+  font-size: 25px;
+  line-height: 25px;
+  margin: 80px 0;
   color: #222;
-  font-weight: 600;
+  font-weight: bold;
 }
 .md-h3 {
-  font-size: 16px;
-  color: #6e6e76;
+  font-size: 20px;
+  line-height: 20px;
+  color: #222;
   font-weight: 500;
+  margin: 24px 0;
 }
 .md-h4 {
   font-size: 16px;
@@ -20,6 +26,10 @@
 }
 .md-p {
   font-size: 20px;
-  color: #666;
+  color: #222;
   font-weight: 400;
+}
+.md-hr {
+  margin: 24px 0;
+  border-color: #aaa;
 }
