@@ -99,6 +99,9 @@ const subtitle = [
   "제10장 약관의 해석, 준거법 및 분쟁해결",
 ];
 const DocumentLayout: React.FC = ({ children }) => {
+  function handle() {
+    window.scrollTo({ top: 1000, behavior: "smooth" });
+  }
   return (
     <div>
       <HeaderWrapper>
@@ -109,7 +112,7 @@ const DocumentLayout: React.FC = ({ children }) => {
           <NavContent>
             {subtitle.map((t, i) => {
               return (
-                <NavListItem key={i}>
+                <NavListItem onClick={handle} key={i}>
                   <a href="#한국">{t}</a>
                 </NavListItem>
               );

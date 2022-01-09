@@ -35,7 +35,7 @@ const Progress = styled.div`
   left: 0;
   z-index: 10;
 `;
-const ReadingProgress = ({ target }) => {
+const ReadingProgress = ({ target }: any) => {
   const [readingProgress, setReadingProgress] = React.useState(0);
   const scrollListener = () => {
     if (!target.current) {
@@ -74,9 +74,16 @@ const ReadingProgress = ({ target }) => {
     />
   );
 };
-const Styled: NextPage = ({ text }) => {
-  const target = React.createRef();
+const Styled: NextPage = ({ text }: any) => {
+  const target = React.createRef<HTMLDivElement>();
+  // console.log(text);
 
+  React.useEffect(() => {
+    const parsed = text.split("\n").filter((t: string) => {
+      return /[\#]{2}(.+) /g.test(t);
+    });
+    console.log(parsed);
+  }, [text]);
   return (
     <DocumentLayout>
       <>
