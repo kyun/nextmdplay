@@ -5,18 +5,24 @@ import React from "react";
 import { NormalComponents } from "react-markdown/lib/complex-types";
 import { SpecialComponents } from "react-markdown/lib/ast-to-react";
 import styled from "@emotion/styled";
+import { parseMarkdown } from "../src/utils/markdown";
 
+let i = 0;
 const mdComp: Partial<
   Omit<NormalComponents, keyof SpecialComponents> & SpecialComponents
 > = {
-  h1: ({ node, ...props }) => <h1 className="md-h1" {...props} />,
+  h1: ({ node, ...props }) => {
+    console.log(node);
+    return <h1 className="md-h1" {...props} />;
+  },
   h2: ({ node, ...props }) => {
     // setArr((prev) => prev.concat(node));
     // setArr((prev) => prev + 1);
+    // console.log(node);
     return (
       <h2
         className="md-h2"
-        id={"h2-" + node.position?.start.offset}
+        // id={"h2-" + node.position?.start.offset}
         {...props}
       />
     );
@@ -76,28 +82,26 @@ const ReadingProgress = ({ target }: any) => {
 };
 const Styled: NextPage = ({ text }: any) => {
   const target = React.createRef<HTMLDivElement>();
+  const [subtitle, setSubtitle] = React.useState<Array<string>>([]);
   // console.log(text);
 
   React.useEffect(() => {
-    const parsed = text.split("\n").filter((t: string) => {
-      return /[\#]{2}(.+) /g.test(t);
-    });
+    const parsed = parseMarkdown(text.split("\n"), "h1");
     console.log(parsed);
+    setSubtitle(parsed.map((t) => t.slice(2)));
   }, [text]);
   return (
-    <DocumentLayout>
-      <>
+    <DocumentLayout subtitle={subtitle}>
+      <div>
         <ReadingProgress target={target} />
         <div ref={target}>
           <ReactMarkdown
             components={mdComp}
             children={text}
-            sourcePos
-            includeElementIndex
             linkTarget={"_blank"}
           />
         </div>
-      </>
+      </div>
     </DocumentLayout>
   );
 };

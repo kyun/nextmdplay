@@ -40,7 +40,6 @@ const Wrapper = styled.div`
   }
 `;
 const Nav = styled.nav`
-  // position: fixed;
   min-width: 360px;
   width: 100%;
   @media (min-width: 768px) {
@@ -57,19 +56,26 @@ const Nav = styled.nav`
   box-sizing: border-box;
 `;
 const NavContent = styled.ol`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   position: sticky;
-  top: 200px;
-  margin-top: 440px;
+  top: 100px;
+  margin-top: 100px;
   width 100%;
   padding: 16px;
   box-sizing: border-box;
   list-style: none;
 `;
-const NavListItem = styled.li`
-  & + & {
-    margin-top: 8px;
-  }
-  ::marker {
+const NavListItem = styled.li<{ selected?: boolean }>`
+  font-size: 16px;
+  ${({ selected }) => (selected ? `color: #feca00; font-weight: bold;` : null)};
+  // :hover {
+  //   color: #feca00;
+  // }
+  :active {
+    color: #feca00;
+    font-weight: bold;
   }
 `;
 
@@ -78,6 +84,11 @@ const Main = styled.main`
   height: 100%;
   background: #f9f9f9;
   margin: auto;
+  // padding: 0 16px;
+  // padding-bottom: 80px;
+`;
+const Content = styled.div`
+  background: #f9f9f9;
   padding: 0 16px;
   padding-bottom: 80px;
 `;
@@ -86,22 +97,49 @@ const Footer = styled.footer`
   height: 200px;
   background: #222;
 `;
-const subtitle = [
-  "제1장 총칙",
-  "제2장 본 서비스 및 서비스 앱에 대한 소유권 및 관련 라이선스",
-  "제3장 서비스 이용계약의 체결",
-  "제4장 계약당사자의 권리의무",
-  "제5장 서비스의 이용",
-  "제6장 콘텐츠의 운영 및 이용",
-  "제7장 서비스 이용과 관련된 제3자와의 관계",
-  "제8장 서비스 해지 및 이용제한 등",
-  "제9장 면책 및 보증제한 등",
-  "제10장 약관의 해석, 준거법 및 분쟁해결",
-];
-const DocumentLayout: React.FC = ({ children }) => {
-  function handle() {
-    window.scrollTo({ top: 1000, behavior: "smooth" });
+// const subtitle = [
+//   "제1장 총칙",
+//   "제2장 본 서비스 및 서비스 앱에 대한 소유권 및 관련 라이선스",
+//   "제3장 서비스 이용계약의 체결",
+//   "제4장 계약당사자의 권리의무",
+//   "제5장 서비스의 이용",
+//   "제6장 콘텐츠의 운영 및 이용",
+//   "제7장 서비스 이용과 관련된 제3자와의 관계",
+//   "제8장 서비스 해지 및 이용제한 등",
+//   "제9장 면책 및 보증제한 등",
+//   "제10장 약관의 해석, 준거법 및 분쟁해결",
+// ];
+const DocumentLayout: React.FC<any> = ({ children, subtitle }) => {
+  const [idx, setIdx] = React.useState(0);
+  function handle(i: number) {
+    // setIdx(i);
+    document.querySelectorAll(".md-h1")[i].scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "nearest",
+    });
+    // window.scrollTo({ top: 1000, behavior: "smooth" });
   }
+
+  React.useEffect(() => {
+    document.querySelectorAll(".md-h1").forEach((el, i) => {
+      let observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              console.log(`#${i}`, entry.isIntersecting, Date.now());
+              setIdx(i);
+              // observer.unobserve(el);
+            }
+          });
+        },
+        { rootMargin: "0px", threshold: 0 }
+      );
+      observer.observe(el);
+    });
+    setIdx(0);
+  }, []);
+
   return (
     <div>
       <HeaderWrapper>
@@ -110,18 +148,24 @@ const DocumentLayout: React.FC = ({ children }) => {
       <Wrapper>
         <Nav>
           <NavContent>
-            {subtitle.map((t, i) => {
+            {subtitle.map((t: string, i: number) => {
               return (
-                <NavListItem onClick={handle} key={i}>
+                <NavListItem
+                  selected={i === idx}
+                  onClick={() => handle(i)}
+                  key={i}
+                >
                   <a href="#한국">{t}</a>
                 </NavListItem>
               );
             })}
           </NavContent>
         </Nav>
-        <Main>{children}</Main>
+        <Main>
+          <Content>{children}</Content>
+          {/* <Footer /> */}
+        </Main>
       </Wrapper>
-      <Footer />
     </div>
   );
 };
