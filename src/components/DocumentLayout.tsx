@@ -27,7 +27,6 @@ const Header = styled.header`
 
 const Wrapper = styled.div`
   display: flex;
-  background: #ff0000;
   margin: auto;
   margin-top: 200px;
   max-width: calc(1280px + 360px);
@@ -42,6 +41,8 @@ const Wrapper = styled.div`
 const Nav = styled.nav`
   min-width: 360px;
   width: 100%;
+  border-right: 1px solid #ccc;
+  margin-right: 40px;
   @media (min-width: 768px) {
     min-width: 240px;
   }
@@ -58,7 +59,7 @@ const Nav = styled.nav`
 const NavContent = styled.ol`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 13px;
   position: sticky;
   top: 100px;
   margin-top: 100px;
@@ -82,19 +83,18 @@ const NavListItem = styled.li<{ selected?: boolean }>`
 const Main = styled.main`
   max-width: 1280px;
   height: 100%;
-  background: #f9f9f9;
   margin: auto;
   // padding: 0 16px;
   // padding-bottom: 80px;
 `;
 const Content = styled.div`
-  background: #f9f9f9;
+  background: #fff;
   padding: 0 16px;
   padding-bottom: 80px;
 `;
 const Footer = styled.footer`
   width: 100%;
-  height: 200px;
+  height: 100px;
   background: #222;
 `;
 // const subtitle = [
@@ -166,6 +166,7 @@ const DocumentLayout: React.FC<any> = ({ children, subtitle }) => {
           {/* <Footer /> */}
         </Main>
       </Wrapper>
+      <Footer />
     </div>
   );
 };
